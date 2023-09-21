@@ -1,0 +1,9 @@
+README.md
+setup.cfg
+setup.py
+squareCount/__init__.py
+squareCount/functions.py
+squareCount.egg-info/PKG-INFO
+squareCount.egg-info/SOURCES.txt
+squareCount.egg-info/dependency_links.txt
+squareCount.egg-info/top_level.txt
