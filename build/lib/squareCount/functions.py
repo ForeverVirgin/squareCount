@@ -1,32 +1,51 @@
 import math
-from decimal import Decimal
 
-def count_square(param):
-    if type(param) == type(10):
-        return count_circle_square(param)
-    elif type(param) == type([1,2,3]):
-        if len(param) == 3:
-            return count_triangle_square(param[0],param[1],param[2])
-        else:
-            return TypeError
+# Функция count_square принимает на вход произвольные параметры.
+# Если получен 1 параметр типа int, то объект считается кругом, а параметр - его радиусом.
+# Возвращается площадь этого круга.
+# Если получено 3 параметра типа int, то объект считается треугольником, а параметры - длинами его сторон.
+# Возвращается площадь этого треугольника.
+# Во всех иных случаях возвращается arg_error()
+
+def count_square(*args):
+  if(len(args) == 1):
+    if type(args[0]) == type(0):
+      return count_square_circle(args[0])
     else:
-        return TypeError
+      return arg_error()
+  if(len(args) == 3):
+    for i in args:
+      if(type(i) != type(0)):
+        return arg_error()
+    return count_square_triangle(args)
+  else:
+    return arg_error()
 
+# Расчет площади круга
 
-def count_circle_square(radius):
-    dec_radius = Decimal(str(radius))
-    return dec_radius * dec_radius * Decimal(str(math.pi)).quantize(Decimal("1.000"))
+def count_square_circle(radius):
+  return math.pi*(radius**2)
 
-def count_triangle_square(a, b, c):
-    if(a+b>c and a+c>b and b+c>a):
-        if (not isRectangular(a, b, c)):
-            p = (a + b + c) / 2
-            return math.sqrt(p * (p - a) * (p - b) * (p - c))
-        else:
-            c1, c2 = isRectangular(a, b, c)
-            return c1 * c2 / 2
+# Расчет площади треугольника. Если прямоугольный, то полупроизведение катетов, иначе по формуле Герона.
+
+def count_square_triangle(args):
+
+  if(args[0]+args[1]>args[2] and args[1]+args[2]>args[0] and args[0]+args[2]>args[1]):
+    if not isRectangular(args[0],args[1],args[2]):
+        p = (args[0] + args[1] + args[2]) / 2
+        return math.sqrt(p*(p-args[0])*(p-args[1])*(p-args[2]))
     else:
-        return "Impossible triangle"
+        c1, c2 = isRectangular(args[0],args[1],args[2])
+        return c1*c2/2
+  else:
+    return "Impossible triangle"
+
+# Действия при вводе неправильных аргументов в функцию count_square. В данном случае возвращает строку "Argument error"
+
+def arg_error():
+  return "Argument error"
+
+# Проверка на то, является ли треугольник прямоугольным
 
 def isRectangular(a, b, c):
     if a**2 + b**2 == c**2:
